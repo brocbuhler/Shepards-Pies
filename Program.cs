@@ -1,7 +1,11 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ShepardsPies.Data;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +55,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // allows our api endpoints to access the database through Entity Framework Core
-builder.Services.AddNpgsql<ShepardsPiesDbContext>(builder.Configuration["BiancasBikesDbConnectionString"]);
+builder.Services.AddDbContext<ShepardsPiesDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddDbContext<ShepardsPiesDbContext>(options =>
+{
+    var connString = builder.Configuration["ShepardsPiesDbContext"];
+    options.UseNpgsql(connString)
+           .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+});
 
 var app = builder.Build();
 

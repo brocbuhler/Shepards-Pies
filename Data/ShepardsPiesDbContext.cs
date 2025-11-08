@@ -6,27 +6,27 @@ using Microsoft.AspNetCore.Identity;
 
 public class ShepardsPiesDbContext : IdentityDbContext<IdentityUser>
 {
-    private readonly IConfiguration _configuration;
-    public DbSet<Employee> employees { get; set; }
-    public DbSet<Order> orders { get; set; }
-    public DbSet<Pizza> pizzas { get; set; }
-    public DbSet<PizzaTopping> pizzaToppings { get; set; }
-    public DbSet<Topping> toppings { get; set; }
-    public DbSet<UserProfile> UserProfiles { get; set; }
+  private readonly IConfiguration _configuration;
+  public DbSet<Employee> employees { get; set; }
+  public DbSet<Order> orders { get; set; }
+  public DbSet<Pizza> pizzas { get; set; }
+  public DbSet<PizzaTopping> pizzaToppings { get; set; }
+  public DbSet<Topping> toppings { get; set; }
+  public DbSet<UserProfile> UserProfiles { get; set; }
   public ShepardsPiesDbContext(DbContextOptions<ShepardsPiesDbContext> context, IConfiguration config) : base(context)
-    {
-        _configuration = config;
-    }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
+  {
+    _configuration = config;
+  }
+
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
     base.OnModelCreating(modelBuilder);
 
     modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
     {
-        Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-        Name = "Admin",
-        NormalizedName = "admin"
+      Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
+      Name = "Admin",
+      NormalizedName = "admin"
     });
 
     modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
@@ -49,7 +49,7 @@ public class ShepardsPiesDbContext : IdentityDbContext<IdentityUser>
       LastName = "Strator",
       Address = "101 Main Street",
     });
-        
+
     modelBuilder.Entity<Employee>().HasData(new Employee[]
     {
         new Employee { Id = 1, Name = "Casey Cashier" },
@@ -87,12 +87,12 @@ public class ShepardsPiesDbContext : IdentityDbContext<IdentityUser>
         {
             Id = 1,
             TableNumber = 4,
-            DeliveryAddress = null,
+            DeliveryAddress = "4700 humber drive",
             DeliveryDriverId = 2,
             CashierId = 1,
             Tip = 3.50m,
-            OrderTakenOn = DateTime.Now
+            OrderTakenOn = new DateTime(2025, 11, 8)
         }
     });
-}
+  }
 }
